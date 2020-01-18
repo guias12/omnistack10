@@ -10,9 +10,9 @@ module.exports = {
     },
 
     async store (req, res) {
-        const { github_username, techs, latitude, longitude } = req.body;
+        const { github_username, techs, latitude, longitude } = req.body;       
         
-        const developer = await Dev.findOne({ github_username });
+        let developer = await Dev.findOne({ github_username });
 
         if (!developer) {
             const url = `https://api.github.com/users/${github_username}`;    
@@ -27,7 +27,7 @@ module.exports = {
                 coordinates: [longitude, latitude]
             };
         
-            const dev = await Dev.create({
+            developer = await Dev.create({
                 github_username,
                 name,
                 avatar_url,
@@ -37,6 +37,6 @@ module.exports = {
             });
         }
         
-        return res.json(dev);
+        return res.json(developer);
     }
 }
